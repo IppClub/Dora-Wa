@@ -85,9 +85,9 @@ This repo provides language bindings and a testing project to demonstrate Wa-lan
       wa build -optimize
       ```
 
-    - Upload it to engine to run. From Dora SSR Web IDE, Open the right-click menu of the game resource tree on the created folder `Hello`. Click on the menu item `Upload` and choose the compiled WASM file named `init.wasm` to upload.
+    - Upload it to engine to run. From Dora SSR Web IDE, Open the right-click menu of the game resource tree on the created folder `Hello`. Click on the menu item `Upload` and choose the compiled WASM file named `output/init.wasm` to upload.
 
-    - Or use a helper script [upload.py](upload.py) with commad `python3 upload.py 192.168.3.1 Hello` inside your Wa project folder to upload WASM file. The IP address is the Dora SSR Web IDE address.
+    - Or use the helper script [upload.py](upload.py) with commad `python3 upload.py 192.168.3.1 Hello` inside your Wa project folder to upload WASM file. The IP address is the Dora SSR Web IDE address.
 
 3. Step 3: Run the game
 
