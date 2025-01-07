@@ -54,7 +54,7 @@ This repo provides language bindings and a testing project to demonstrate Wa-lan
 
     - Write code in `src/main.wa`.
 
-        ```wa
+        ```go
         import "dora"
 
         func main() {
