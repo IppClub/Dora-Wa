@@ -264,6 +264,9 @@ func object_release(obj: i64)
 #wa:import dora object_to_node
 func object_to_node(obj: i64) => i64
 
+#wa:import dora object_to_sprite
+func object_to_sprite(obj: i64) => i64
+
 #wa:import dora object_to_camera
 func object_to_camera(obj: i64) => i64
 
@@ -328,6 +331,15 @@ func ObjectCastToNode(object: Object) => *Node {
 	}
 	ObjectRetain(raw)
 	return NodeFrom(raw)
+}
+
+func ObjectCastToSprite(object: Object) => *Sprite {
+	raw := object_to_sprite(*object.raw)
+	if raw == 0 {
+		return nil
+	}
+	ObjectRetain(raw)
+	return SpriteFrom(raw)
 }
 
 func ObjectCastToCamera(object: Object) => *Camera {
@@ -2031,17 +2043,20 @@ func Node.OnAppChange(callback: func(setting_name: string)) {
 	})
 }
 
-func Node.OnAppWs(callback: func(event_type: string, msg: string)) {
+/// Registers callback for AppWS global event.
+/// The payload is a Dictionary with keys "type" and "msg".
+/// When sending AppWS, emit one Dictionary argument as payload.
+func Node.OnAppWs(callback: func(event: Dictionary)) {
 	this.Gslot("AppWS", func(stack: CallStack) {
-		event_type, ok := stack.PopStr()
-		if !ok {
+		event_obj := stack.PopObject()
+		if event_obj == nil {
 			panic("invalid app ws event")
 		}
-		msg, ok := stack.PopStr()
-		if !ok {
+		event := ObjectAsDictionary(*event_obj)
+		if event == nil {
 			panic("invalid app ws event")
 		}
-		callback(event_type, msg)
+		callback(*event)
 	})
 }
 
@@ -2206,6 +2221,20 @@ func BodyType.ToValue() => i32 {
 global BodyTypeDynamic = BodyType{value: 0}
 global BodyTypeStatic = BodyType{value: 1}
 global BodyTypeKinematic = BodyType{value: 2}
+
+/* ShaderStage */
+
+type ShaderStage :struct {
+	value: i32
+}
+
+func ShaderStage.ToValue() => i32 {
+	return this.value
+}
+
+global ShaderStageVertex = ShaderStage{value: 1}
+global ShaderStageFragment = ShaderStage{value: 2}
+global ShaderStageCompute = ShaderStage{value: 3}
 
 /* EntityEvent */
 
